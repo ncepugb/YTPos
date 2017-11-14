@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+		<!--<meta name="viewport" content="width=device-width">-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>YTPOS</title>
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-md-12">
+					<h2>使用说明</h2>
+					<h3>入门</h3>
+					<p>Js通过call****函数进行，调用刷卡机上的建行程序，返回结果由call****Callback回调方法获取，处理返回结果请重写
+					call****Callback方法。具体传参过程请参阅代码</p>
+					<h3>调用POS机银行卡支付</h3>
+					<p>调用方法：callPayByCard</p>
+					<h4>参数说明</h4>
+					<p>amt:交易金额；</p>
+					<p>isNeedPrintReceipt: 当该值为true表示POS不打单，当该值为false或者不存在时表示由POS打；(非必需)</p>
+					<p>lsOrderNo:唯一订单号；(非必需)</p>
+					<p>inputRemarkInfo：第三方传入的需要打印的备注信息；(非必需)</p>
+					<h3>调用POS机微信支付宝支付</h3>
+					<p>调用方法：callPayByAlipayWechat</p>
+					<h4>参数说明</h4>
+					<p>amt:交易金额；</p>
+					<p>qrCodeParam:微信/支付宝二维码信息（此字段不传则由POS机负责扫二维码）；(非必需)</p>
+					<p>isNeedPrintReceipt: 当该值为true表示POS不打单，当该值为false或者不存在时表示由POS打；(非必需)</p>
+					<p>lsOrderNo:唯一订单号；(非必需)</p>
+					<p>inputRemarkInfo：第三方传入的需要打印的备注信息；(非必需)</p>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-md-12">
+					<h3>支付参数</h3>
+					<form>
+						<div class="form-group">
+							<label for="exampleInputEmail1">交易金额</label>
+							<input type="text" class="form-control" id="amount" placeholder="">
+						</div>
+					</form>
+					<h3>操作</h3>
+					<button class="btn btn-info btn-lg btn-block" onclick="callPayByCard()">银行卡消费</button>
+
+					<button class="btn btn-info btn-lg btn-block" onclick="callPayByAlipayWechat()">微信/支付宝消费</button>
+
+				</div>
+
+			</div>
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-md-12">
+					<div>
+						<h3>返回参数</h3>
+					</div>
+					<div>
+						<label for="exampleInputEmail1">returnCode</label>
+					</div>
+
+					<pre id="returnCode"></pre>
+
+					<div>
+						<label for="exampleInputEmail1">resultMsg</label>
+					</div>
+
+					<pre id="resultMsg"></pre>
+
+					<div>
+						<label for="exampleInputEmail1">returnData</label>
+					</div>
+
+					<pre id="returnData"></pre>
+				</div>
+
+			</div>
+
+		</div>
+
+		<script>
+			//调用银行卡支付方法
+			function callPayByCard() {
+				var amt = document.getElementById("amount").value;
+				var msg = {
+					amt: amt
+				}
+				var msgStr = JSON.stringify(msg)
+				test.PayByCard(msgStr);
+			}
+
+			//调用银行卡支付方法结果回调方法
+			function callPayByCardCallback(returnCode, resultMsg, returnData) {
+				//alert(returnCode.toString() + resultMsg.toString() + returnData.toString());
+				document.getElementById("returnCode").innerHTML = returnCode;
+				document.getElementById("resultMsg").innerHTML = resultMsg;
+				document.getElementById("returnData").innerHTML = returnData;
+				console.log("回调成功");
+			}
+
+			//调用支付宝/微信支付方法
+			function callPayByAlipayWechat() {
+				var amt = document.getElementById("amount").value;
+				var msg = {
+					amt: amt
+				}
+				var msgStr = JSON.stringify(msg)
+				test.PayByAlipayWechat(msgStr);
+			}
+
+			//调用支付宝/微信支付结果回调方法
+			function callPayByAlipayWechatCallback(returnCode, resultMsg, returnData) {
+				//alert(returnCode.toString() + resultMsg.toString() + returnData.toString());
+				document.getElementById("returnCode").innerHTML = returnCode;
+				document.getElementById("resultMsg").innerHTML = resultMsg;
+				document.getElementById("returnData").innerHTML = returnData;
+				console.log("回调成功");
+			}
+		</script>
+	</body>
+
+</html>
